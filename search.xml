@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>tmux常见命令整理</title>
+      <link href="/2024/08/01/tmux%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/"/>
+      <url>/2024/08/01/tmux%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h1 id="tmux常见命令整理"><a href="#tmux常见命令整理" class="headerlink" title="tmux常见命令整理"></a>tmux常见命令整理</h1><p>tmux是一个强大的终端复用器，允许用户在一个终端窗口中运行多个终端会话，并且可以在这些会话之间自由切换。以下是tmux的一些常见命令及其功能：</p><h3 id="会话操作"><a href="#会话操作" class="headerlink" title="会话操作"></a>会话操作</h3><ol><li><p><strong>新建会话</strong></p><ul><li><code>tmux</code>：创建一个新的会话，如果不指定名称，则使用默认名称。</li><li><code>tmux new -s &lt;session_name&gt;</code>：创建一个新的会话，并指定会话名称。</li></ul></li><li><p><strong>退出会话</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>d</code>：分离当前会话（退出会话界面，但会话仍在后台运行）。</li></ul></li><li><p><strong>查看所有会话</strong></p><ul><li><code>tmux ls</code> 或 <code>tmux list-sessions</code>：列出所有已存在的会话。</li></ul></li><li><p><strong>恢复会话</strong></p><ul><li><code>tmux attach -t &lt;session_name&gt;</code> 或 <code>tmux a -t &lt;session_name&gt;</code>：连接到一个已存在的会话。</li></ul></li><li><p><strong>重命名会话</strong></p><ul><li><code>tmux rename-session -t &lt;old_name&gt; &lt;new_name&gt;</code>：重命名一个已存在的会话。</li></ul></li><li><p><strong>关闭会话</strong></p><ul><li><code>tmux kill-session -t &lt;session_name&gt;</code>：终止一个已存在的会话。</li></ul></li></ol><h3 id="窗口操作"><a href="#窗口操作" class="headerlink" title="窗口操作"></a>窗口操作</h3><ol><li><p><strong>新建窗口</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>c</code>：在当前会话中创建一个新窗口。</li></ul></li><li><p><strong>切换窗口</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>&lt;窗口序号&gt;</code>：切换到指定序号的窗口。</li><li><code>Ctrl + b</code> 后接 <code>p</code>：切换到上一个窗口。</li><li><code>Ctrl + b</code> 后接 <code>n</code>：切换到下一个窗口。</li><li><code>Ctrl + b</code> 后接 <code>w</code>：进入窗口选择列表，通过方向键和回车键选择窗口。</li></ul></li><li><p><strong>重命名窗口</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>,</code>：重命名当前窗口。</li></ul></li><li><p><strong>关闭窗口</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>&amp;</code>：关闭当前窗口。</li></ul></li></ol><h3 id="窗格操作"><a href="#窗格操作" class="headerlink" title="窗格操作"></a>窗格操作</h3><ol><li><p><strong>划分窗格</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>%</code>：将当前窗口划分为左右两个窗格。</li><li><code>Ctrl + b</code> 后接 <code>&quot;</code>：将当前窗口划分为上下两个窗格。</li></ul></li><li><p><strong>切换活动窗格</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>&lt;方向键&gt;</code>：在窗格之间切换。</li></ul></li><li><p><strong>调整窗格大小</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>&lt;方向键&gt;</code>（同时按住）：以1个单元格为单位调整当前窗格的边缘。</li><li><code>Alt + 方向键</code>：以5个单元格为单位调整当前窗格的边缘（取决于配置）。</li></ul></li><li><p><strong>关闭窗格</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>x</code>：关闭当前窗格。</li></ul></li><li><p><strong>窗格布局切换</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>空格键</code>：在预置的窗格布局中循环切换。</li></ul></li></ol><h3 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h3><ol><li><p><strong>文本复制模式</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>[</code>：进入文本复制模式，此时可以使用方向键和翻页键来选择文本，按 <code>Enter</code> 键复制选中的文本，按 <code>q</code> 退出复制模式。</li></ul></li><li><p><strong>会话快捷键提示</strong></p><ul><li><code>Ctrl + b</code> 后接 <code>?</code>：列出所有快捷键，按 <code>q</code> 返回。</li></ul></li><li><p><strong>配置选项</strong></p><ul><li>tmux的配置通常保存在用户的家目录下的<code>.tmux.conf</code>文件中，可以通过编辑该文件来自定义tmux的行为和外观。</li></ul></li></ol><p>请注意，tmux的快捷键前缀默认是<code>Ctrl + b</code>，但用户可以在<code>.tmux.conf</code>文件中通过<code>set -g prefix &lt;new-prefix&gt;</code>命令来更改这个前缀。此外，tmux还提供了丰富的命令和配置选项，用户可以通过<code>man tmux</code>或<code>tmux --help</code>命令来查看更多信息。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Linux常见命令速查</title>
       <link href="/2024/07/30/Linux%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/"/>
       <url>/2024/07/30/Linux%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/</url>
