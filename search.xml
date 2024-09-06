@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>Springboot简单回顾</title>
+      <link href="/2024/09/06/Springboot%E7%AE%80%E5%8D%95%E5%9B%9E%E9%A1%BE/"/>
+      <url>/2024/09/06/Springboot%E7%AE%80%E5%8D%95%E5%9B%9E%E9%A1%BE/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Springboot简单回顾"><a href="#Springboot简单回顾" class="headerlink" title="Springboot简单回顾"></a>Springboot简单回顾</h1><p>自从入了深度学习的坑，已不学java良久，今日重拾知识</p><h2 id="Spring-Boot-的主要特点包括："><a href="#Spring-Boot-的主要特点包括：" class="headerlink" title="Spring Boot 的主要特点包括："></a>Spring Boot 的主要特点包括：</h2><ol><li><strong>简化配置</strong>: Spring Boot 遵循约定优于配置的原则，减少了传统 Spring 应用中的大量配置。它通过自动配置（auto-configuration）和起步依赖（starter dependencies）来简化项目的配置过程，让开发者可以快速搭建起一个可运行的 Spring 应用。</li><li><strong>集成性强</strong>: Spring Boot 提供了大量的开箱即用的特性和功能，如内嵌的 Servlet 容器（如Tomcat、Jetty或Undertow）、健康检查、指标监控等。它还整合了诸多常用的库和框架，如Spring Data、Spring Security等，使得开发者可以快速构建出功能完善的应用。</li><li><strong>微服务支持</strong>: Spring Boot 非常适合用于构建微服务架构。它提供了丰富的支持，如通过Spring Cloud进行微服务架构的开发，集成了服务发现、配置中心、负载均衡等功能，帮助开发者构建可伸缩、高可用的微服务系统。</li><li><strong>内嵌服务器</strong>: Spring Boot 可以将应用程序打包成一个可执行的 JAR 文件，并内置了常用的 Servlet 容器，如 Tomcat、Jetty 或 Undertow。这样一来，开发者可以通过简单的 <strong>java -jar</strong> 命令来运行应用程序，而无需部署到外部应用服务器。</li><li><strong>生态丰富</strong>: 由于 Spring Boot 的广泛应用和强大生态系统，开发者可以轻松地使用各种扩展和插件，如 Actuator、Spring Boot DevTools 等，提高开发效率和应用质量。</li></ol><h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p><img src="/../img/java/18.png" alt="18"></p><h2 id="rest-api规范"><a href="#rest-api规范" class="headerlink" title="rest api规范"></a>rest api规范</h2><h3 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h3><p>路径又称”终点”（endpoint），表示API的具体网址。</p><p>在RESTful架构中，每个网址代表一种资源（resource），所以网址中不能有动词，只能有名词，而且所用的名词往往与数据库的表格名对应。</p><h3 id="Http-动词"><a href="#Http-动词" class="headerlink" title="Http 动词"></a>Http 动词</h3><ul><li>GET（SELECT）：从服务器取出资源（一项或多项）。</li><li>POST（CREATE）：在服务器新建一个资源。</li><li>PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。</li><li>PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。</li><li>DELETE（DELETE）：从服务器删除资源。</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Springboot </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Flexbox弹性盒子</title>
       <link href="/2024/08/12/Flexbox%E5%BC%B9%E6%80%A7%E7%9B%92%E5%AD%90/"/>
       <url>/2024/08/12/Flexbox%E5%BC%B9%E6%80%A7%E7%9B%92%E5%AD%90/</url>
