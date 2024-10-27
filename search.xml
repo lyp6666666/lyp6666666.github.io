@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>springboot常用注解整理</title>
+      <link href="/2024/10/27/springboot%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%95%B4%E7%90%86/"/>
+      <url>/2024/10/27/springboot%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%95%B4%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Springboot常用注解整理"><a href="#Springboot常用注解整理" class="headerlink" title="Springboot常用注解整理"></a>Springboot常用注解整理</h1><h2 id="Controller层"><a href="#Controller层" class="headerlink" title="Controller层"></a>Controller层</h2>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Springboot </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MongoDB快速入门整理</title>
       <link href="/2024/10/26/MongoDB%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%B4%E7%90%86/"/>
       <url>/2024/10/26/MongoDB%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%B4%E7%90%86/</url>
