@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>微服务保护 | lypのblog</title><meta name="author" content="实名上网陆熠鹏"><meta name="copyright" content="实名上网陆熠鹏"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="微服务保护和分布式事务微服务保护的方案有很多，比如：  请求限流 线程隔离 服务熔断  这些方案或多或少都会导致服务的体验上略有下降，比如请求限流，降低了并发上限；线程隔离，降低了可用资源数量；服务熔断，降低了服务的完整度，部分服务变的不可用或弱可用。因此这些方案都属于服务降级的方案。但通过这些方案，服务的健壮性得到了提升， SentinelSentinel是阿里巴巴开源的一款服务保护框架，目前已">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务保护">
+<meta property="og:url" content="http://lypsblog.top/2024/11/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A4/index.html">
+<meta property="og:site_name" content="lypのblog">
+<meta property="og:description" content="微服务保护和分布式事务微服务保护的方案有很多，比如：  请求限流 线程隔离 服务熔断  这些方案或多或少都会导致服务的体验上略有下降，比如请求限流，降低了并发上限；线程隔离，降低了可用资源数量；服务熔断，降低了服务的完整度，部分服务变的不可用或弱可用。因此这些方案都属于服务降级的方案。但通过这些方案，服务的健壮性得到了提升， SentinelSentinel是阿里巴巴开源的一款服务保护框架，目前已">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://lypsblog.top/img/java/java.png">
+<meta property="article:published_time" content="2024-11-28T06:52:09.000Z">
+<meta property="article:modified_time" content="2024-12-05T01:40:15.450Z">
+<meta property="article:author" content="实名上网陆熠鹏">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://lypsblog.top/img/java/java.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lypsblog.top/2024/11/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '微服务保护',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-05 09:40:15'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Learning notes</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/machine-learning/"><span> Machine-learning</span></a></li><li><a class="site-page child" href="/java/"><span> Java</span></a></li><li><a class="site-page child" href="/springboot/"><span> Springboot</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/java/java.png')"><nav id="nav"><span id="blog-info"><a href="/" title="lypのblog"><span class="site-name">lypのblog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Learning notes</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/machine-learning/"><span> Machine-learning</span></a></li><li><a class="site-page child" href="/java/"><span> Java</span></a></li><li><a class="site-page child" href="/springboot/"><span> Springboot</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">微服务保护</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-28T06:52:09.000Z" title="Created 2024-11-28 14:52:09">2024-11-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-12-05T01:40:15.450Z" title="Updated 2024-12-05 09:40:15">2024-12-05</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="微服务保护"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="微服务保护和分布式事务"><a href="#微服务保护和分布式事务" class="headerlink" title="微服务保护和分布式事务"></a>微服务保护和分布式事务</h1><p>微服务保护的方案有很多，比如：</p>
+<ul>
+<li>请求限流</li>
+<li>线程隔离</li>
+<li>服务熔断</li>
+</ul>
+<p>这些方案或多或少都会导致服务的体验上略有下降，比如请求限流，降低了并发上限；线程隔离，降低了可用资源数量；服务熔断，降低了服务的完整度，部分服务变的不可用或弱可用。因此这些方案都属于服务<strong>降级</strong>的方案。但通过这些方案，服务的健壮性得到了提升，</p>
+<h2 id="Sentinel"><a href="#Sentinel" class="headerlink" title="Sentinel"></a>Sentinel</h2><p>Sentinel是阿里巴巴开源的一款服务保护框架，目前已经加入SpringCloudAlibaba中。官方网站：</p>
+<p><a target="_blank" rel="noopener" href="https://sentinelguard.io/zh-cn/">https://sentinelguard.io/zh-cn/</a></p>
+<p>Sentinel 的使用可以分为两个部分:</p>
+<ul>
+<li><strong>核心库</strong>（Jar包）：不依赖任何框架&#x2F;库，能够运行于 Java 8 及以上的版本的运行时环境，同时对 Dubbo &#x2F; Spring Cloud 等框架也有较好的支持。在项目中引入依赖即可实现服务限流、隔离、熔断等功能。</li>
+<li><strong>控制台</strong>（Dashboard）：Dashboard 主要负责管理推送规则、监控、管理机器信息等。</li>
+</ul>
+<h3 id="控制台搭建"><a href="#控制台搭建" class="headerlink" title="控制台搭建"></a>控制台搭建</h3><p>为了方便监控微服务，我们先把Sentinel的控制台搭建出来。</p>
+<p>1）下载jar包</p>
+<p>2）运行</p>
+<p>将jar包放在任意非中文、不包含特殊字符的目录下，重命名为<code>sentinel-dashboard.jar</code></p>
+<p>然后运行如下命令启动控制台：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Dserver.port=8090 -Dcsp.sentinel.dashboard.server=localhost:8090 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar</span><br></pre></td></tr></table></figure>
+
+<p>3）访问</p>
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8090</a>页面，就可以看到sentinel的控制台了：</p>
+<p>需要输入账号和密码，默认都是：sentinel</p>
+<p>登录后，即可看到控制台，默认会监控sentinel-dashboard服务本身：</p>
+<h3 id="微服务整合"><a href="#微服务整合" class="headerlink" title="微服务整合"></a>微服务整合</h3><p>我们在<code>cart-service</code>模块中整合sentinel，连接<code>sentinel-dashboard</code>控制台，步骤如下： 1）引入sentinel依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--sentinel--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-sentinel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2）配置控制台</p>
+<p>修改application.yaml文件，添加下面内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span> </span><br><span class="line">    <span class="attr">sentinel:</span></span><br><span class="line">      <span class="attr">transport:</span></span><br><span class="line">        <span class="attr">dashboard:</span> <span class="string">localhost:8090</span></span><br></pre></td></tr></table></figure>
+
+<p>3）访问<code>cart-service</code>的任意端点</p>
+<p>重启<code>cart-service</code>，然后访问查询购物车接口，sentinel的客户端就会将服务访问的信息提交到<code>sentinel-dashboard</code>控制台。并展示出统计信息：</p>
+<p>所谓簇点链路，就是单机调用链路，是一次请求进入服务后经过的每一个被<code>Sentinel</code>监控的资源。默认情况下，<code>Sentinel</code>会监控<code>SpringMVC</code>的每一个<code>Endpoint</code>（接口）。</p>
+<p>因此，我们看到<code>/carts</code>这个接口路径就是其中一个簇点，我们可以对其进行限流、熔断、隔离等保护措施。</p>
+<p>不过，需要注意的是，我们的SpringMVC接口是按照Restful风格设计，因此购物车的查询、删除、修改等接口全部都是<code>/carts</code>路径：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/26.png" alt="26"></p>
+<p>默认情况下Sentinel会把路径作为簇点资源的名称，无法区分路径相同但请求方式不同的接口，查询、删除、修改等都被识别为一个簇点资源，这显然是不合适的。</p>
+<p>所以我们可以选择打开Sentinel的请求方式前缀，把<code>请求方式 + 请求路径</code>作为簇点资源名：</p>
+<p>首先，在<code>cart-service</code>的<code>application.yml</code>中添加下面的配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">sentinel:</span></span><br><span class="line">      <span class="attr">transport:</span></span><br><span class="line">        <span class="attr">dashboard:</span> <span class="string">localhost:8090</span></span><br><span class="line">      <span class="attr">http-method-specify:</span> <span class="literal">true</span> <span class="comment"># 开启请求方式前缀</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，重启服务，通过页面访问购物车的相关接口，可以看到sentinel控制台的簇点链路发生了变化：</p>
+<h3 id="请求限流"><a href="#请求限流" class="headerlink" title="请求限流"></a>请求限流</h3><p>在簇点链路后面点击流控按钮，即可对其做限流配置：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/27.png" alt="27"></p>
+<p>在弹出的菜单中这样填写：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/28.png" alt="28"></p>
+<p>这样就把查询购物车列表这个簇点资源的流量限制在了每秒6个，也就是最大QPS为6.</p>
+<p>也就是说购物车查询服务每秒只会处理6个，超出部分就会拒绝访问</p>
+<h3 id="线程隔离"><a href="#线程隔离" class="headerlink" title="线程隔离"></a>线程隔离</h3><p>限流可以降低服务器压力，尽量减少因并发流量引起的服务故障的概率，但并不能完全避免服务故障。一旦某个服务出现故障，我们必须隔离对这个服务的调用，避免发生雪崩。</p>
+<p>比如，查询购物车的时候需要查询商品，为了避免因商品服务出现故障导致购物车服务级联失败，我们可以把购物车业务中查询商品的部分隔离起来，限制可用的线程资源：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/29.png" alt="29"></p>
+<p>这样，即便商品服务出现故障，最多导致查询购物车业务故障，并且可用的线程资源也被限定在一定范围，不会导致整个购物车服务崩溃。</p>
+<p>所以，我们要对查询商品的FeignClient接口做线程隔离。</p>
+<h4 id="OpenFeign整合Sentinel"><a href="#OpenFeign整合Sentinel" class="headerlink" title="OpenFeign整合Sentinel"></a>OpenFeign整合Sentinel</h4><p>修改cart-service模块的application.yml文件，开启Feign的sentinel功能：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">sentinel:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启feign对sentinel的支持</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，默认情况下SpringBoot项目的tomcat最大线程数是200，允许的最大连接是8492，单机测试很难打满。</p>
+<p>所以我们需要配置一下cart-service模块的application.yml文件，修改tomcat连接：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8082</span></span><br><span class="line">  <span class="attr">tomcat:</span></span><br><span class="line">    <span class="attr">threads:</span></span><br><span class="line">      <span class="attr">max:</span> <span class="number">50</span> <span class="comment"># 允许的最大线程数</span></span><br><span class="line">    <span class="attr">accept-count:</span> <span class="number">50</span> <span class="comment"># 最大排队等待数量</span></span><br><span class="line">    <span class="attr">max-connections:</span> <span class="number">100</span> <span class="comment"># 允许的最大连接</span></span><br></pre></td></tr></table></figure>
+
+<p>然后重启cart-service服务，可以看到查询商品的FeignClient自动变成了一个簇点资源：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/30.png" alt="30"></p>
+<h4 id="配置线程隔离"><a href="#配置线程隔离" class="headerlink" title="配置线程隔离"></a>配置线程隔离</h4><p>接下来，点击查询商品的FeignClient对应的簇点资源后面的流控按钮：</p>
+<p>在弹出的表单中填写下面内容：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/31.png" alt="31"></p>
+<p>注意，这里勾选的是并发线程数限制，也就是说这个查询功能最多使用5个线程，而不是5QPS。如果查询商品的接口每秒处理2个请求，则5个线程的实际QPS在10左右，而超出的请求自然会被拒绝。</p>
+<p>也就是值分配了5个线程给查询购物车这个接口，这个接口的并发再高也不会影响到其他功能</p>
+<h3 id="服务熔断"><a href="#服务熔断" class="headerlink" title="服务熔断"></a>服务熔断</h3><p>在上节课，我们利用线程隔离对查询购物车业务进行隔离，保护了购物车服务的其它接口。由于查询商品的功能耗时较高（我们模拟了500毫秒延时），再加上线程隔离限定了线程数为5，导致接口吞吐能力有限，最终QPS只有10左右。这就导致了几个问题：</p>
+<p>第一，超出的QPS上限的请求就只能抛出异常，从而导致购物车的查询失败。但从业务角度来说，即便没有查询到最新的商品信息，购物车也应该展示给用户，用户体验更好。也就是给查询失败设置一个<strong>降级处理</strong>逻辑。</p>
+<p>第二，由于查询商品的延迟较高（模拟的500ms），从而导致查询购物车的响应时间也变的很长。这样不仅拖慢了购物车服务，消耗了购物车服务的更多资源，而且用户体验也很差。对于商品服务这种不太健康的接口，我们应该直接停止调用，直接走降级逻辑，避免影响到当前服务。也就是将商品查询接口<strong>熔断</strong>。</p>
+<h4 id="编写降级逻辑"><a href="#编写降级逻辑" class="headerlink" title="编写降级逻辑"></a>编写降级逻辑</h4><p>触发限流或熔断后的请求不一定要直接报错，也可以返回一些默认数据或者友好提示，用户体验会更好。</p>
+<p>给FeignClient编写失败后的降级逻辑有两种方式：</p>
+<ul>
+<li>方式一：FallbackClass，无法对远程调用的异常做处理</li>
+<li>方式二：FallbackFactory，可以对远程调用的异常做处理，我们一般选择这种方式。</li>
+</ul>
+<p>这里我们演示方式二的失败降级处理。</p>
+<p><strong>步骤一</strong>：在hm-api模块中给<code>ItemClient</code>定义降级处理类，实现<code>FallbackFactory</code>：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/32.png" alt="32"></p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hmall.api.client.fallback;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.hmall.api.client.ItemClient;</span><br><span class="line"><span class="keyword">import</span> com.hmall.api.dto.ItemDTO;</span><br><span class="line"><span class="keyword">import</span> com.hmall.api.dto.OrderDetailDTO;</span><br><span class="line"><span class="keyword">import</span> com.hmall.common.exception.BizIllegalException;</span><br><span class="line"><span class="keyword">import</span> com.hmall.common.utils.CollUtils;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.openfeign.FallbackFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Collection;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ItemClientFallback</span> <span class="keyword">implements</span> <span class="title class_">FallbackFactory</span>&lt;ItemClient&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ItemClient <span class="title function_">create</span><span class="params">(Throwable cause)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ItemClient</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> List&lt;ItemDTO&gt; <span class="title function_">queryItemByIds</span><span class="params">(Collection&lt;Long&gt; ids)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;远程调用ItemClient#queryItemByIds方法出现异常，参数：&#123;&#125;&quot;</span>, ids, cause);</span><br><span class="line">                <span class="comment">// 查询购物车允许失败，查询失败，返回空集合</span></span><br><span class="line">                <span class="keyword">return</span> CollUtils.emptyList();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deductStock</span><span class="params">(List&lt;OrderDetailDTO&gt; items)</span> &#123;</span><br><span class="line">                <span class="comment">// 库存扣减业务需要触发事务回滚，查询失败，抛出异常</span></span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BizIllegalException</span>(cause);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤二</strong>：在<code>hm-api</code>模块中的<code>com.hmall.api.config.DefaultFeignConfig</code>类中将<code>ItemClientFallback</code>注册为一个<code>Bean</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> ItemClientFallback <span class="title function_">itemClientFallback</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ItemClientFallback</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤三</strong>：在<code>hm-api</code>模块中的<code>ItemClient</code>接口中使用<code>ItemClientFallbackFactory</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hmall.api.client;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.hmall.api.client.fallback.ItemClientFallback;</span><br><span class="line"><span class="keyword">import</span> com.hmall.api.conifg.DefaultFeignConfig;</span><br><span class="line"><span class="keyword">import</span> com.hmall.api.dto.ItemDTO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.hmall.api.dto.OrderDetailDTO;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.openfeign.FeignClient;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PutMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestBody;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Collection;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FeignClient(value = &quot;item-service&quot;,configuration = DefaultFeignConfig.class,</span></span><br><span class="line"><span class="meta">        fallbackFactory = ItemClientFallback.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ItemClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/items&quot;)</span></span><br><span class="line">    List&lt;ItemDTO&gt; <span class="title function_">queryItemByIds</span><span class="params">(<span class="meta">@RequestParam(&quot;ids&quot;)</span> Collection&lt;Long&gt; ids)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PutMapping(&quot;/items/stock/deduct&quot;)</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">deductStock</span><span class="params">(<span class="meta">@RequestBody</span> List&lt;OrderDetailDTO&gt; items)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="服务熔断-1"><a href="#服务熔断-1" class="headerlink" title="服务熔断"></a>服务熔断</h4><p>查询商品的RT较高（模拟的500ms），从而导致查询购物车的RT也变的很长。这样不仅拖慢了购物车服务，消耗了购物车服务的更多资源，而且用户体验也很差。</p>
+<p>对于商品服务这种不太健康的接口，我们应该停止调用，直接走降级逻辑，避免影响到当前服务。也就是将商品查询接口<strong>熔断</strong>。当商品服务接口恢复正常后，再允许调用。这其实就是<strong>断路器</strong>的工作模式了。</p>
+<p>Sentinel中的断路器不仅可以统计某个接口的<strong>慢请求比例</strong>，还可以统计<strong>异常请求比例</strong>。当这些比例超出阈值时，就会<strong>熔断</strong>该接口，即拦截访问该接口的一切请求，降级处理；当该接口恢复正常时，再放行对于该接口的请求。</p>
+<p>断路器的工作状态切换有一个状态机来控制：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/33.png" alt="33"></p>
+<p>状态机包括三个状态：</p>
+<ul>
+<li><strong>closed</strong>：关闭状态，断路器放行所有请求，并开始统计异常比例、慢请求比例。超过阈值则切换到open状态</li>
+<li><strong>open</strong>：打开状态，服务调用被<strong>熔断</strong>，访问被熔断服务的请求会被拒绝，快速失败，直接走降级逻辑。Open状态持续一段时间后会进入half-open状态</li>
+<li><strong>half-open</strong>：半开状态，放行一次请求，根据执行结果来判断接下来的操作。 <ul>
+<li>请求成功：则切换到closed状态</li>
+<li>请求失败：则切换到open状态</li>
+</ul>
+</li>
+</ul>
+<p>我们可以在控制台通过点击簇点后的**<code>熔断</code>**按钮来配置熔断策略：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/34.jpg" alt="34"></p>
+<p>这种是按照慢调用比例来做熔断，上述配置的含义是：</p>
+<ul>
+<li>RT超过200毫秒的请求调用就是慢调用</li>
+<li>统计最近1000ms内的最少5次请求，如果慢调用比例不低于0.5，则触发熔断</li>
+<li>熔断持续时长20s</li>
+</ul>
+<h1 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h1><p>首先我们看看项目中的下单业务整体流程：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/35.jpg" alt="35"></p>
+<p>由于订单、购物车、商品分别在三个不同的微服务，而每个微服务都有自己独立的数据库，因此下单过程中就会跨多个数据库完成业务。而每个微服务都会执行自己的本地事务：</p>
+<ul>
+<li>交易服务：下单事务</li>
+<li>购物车服务：清理购物车事务</li>
+<li>库存服务：扣减库存事务</li>
+</ul>
+<p>整个业务中，各个本地事务是有关联的。因此每个微服务的本地事务，也可以称为<strong>分支事务</strong>。多个有关联的分支事务一起就组成了<strong>全局事务</strong>。我们必须保证整个全局事务同时成功或失败。</p>
+<p>我们知道每一个分支事务就是传统的<strong>单体事务</strong>，都可以满足ACID特性，但全局事务跨越多个服务、多个数据库，是否还能满足呢？</p>
+<p>事务并未遵循ACID的原则，归其原因就是参与事务的多个子业务在不同的微服务，跨越了不同的数据库。虽然每个单独的业务都能在本地遵循ACID，但是它们互相之间没有感知，不知道有人失败了，无法保证最终结果的统一，也就无法遵循ACID的事务特性了。</p>
+<p>这就是分布式事务问题，出现以下情况之一就可能产生分布式事务问题：</p>
+<ul>
+<li>业务跨多个服务实现</li>
+<li>业务跨多个数据源实现</li>
+</ul>
+<h2 id="Seata"><a href="#Seata" class="headerlink" title="Seata"></a>Seata</h2><p>解决分布式事务的方案有很多，但实现起来都比较复杂，因此我们一般会使用开源的框架来解决分布式事务问题。在众多的开源分布式事务框架中，功能最完善、使用最多的就是阿里巴巴在2019年开源的Seata了。</p>
+<p>其实分布式事务产生的一个重要原因，就是参与事务的多个分支事务互相无感知，不知道彼此的执行状态。因此解决分布式事务的思想非常简单：</p>
+<p>就是找一个统一的<strong>事务协调者</strong>，与多个分支事务通信，检测每个分支事务的执行状态，保证全局事务下的每一个分支事务同时成功或失败即可。大多数的分布式事务框架都是基于这个理论来实现的。</p>
+<p>Seata也不例外，在Seata的事务管理中有三个重要的角色：</p>
+<ul>
+<li><strong>TC</strong> **(Transaction Coordinator) - **事务协调者：维护全局和分支事务的状态，协调全局事务提交或回滚。 </li>
+<li><strong>TM (Transaction Manager) -</strong> <strong>事务管理器：</strong>定义全局事务的范围、开始全局事务、提交或回滚全局事务。 </li>
+<li><strong>RM (Resource Manager) -</strong> <strong>资源管理器：</strong>管理分支事务，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/36.png" alt="36"></p>
+<p>其中，<strong>TM</strong>和<strong>RM</strong>可以理解为Seata的客户端部分，引入到参与事务的微服务依赖中即可。将来<strong>TM</strong>和<strong>RM</strong>就会协助微服务，实现本地分支事务与<strong>TC</strong>之间交互，实现事务的提交或回滚。</p>
+<p>而<strong>TC</strong>服务则是事务协调中心，是一个独立的微服务，需要单独部署。</p>
+<p>如果有一个分支事务失败，分支事务先报告给TC，等方法结束时，TM告知TC分布式事务结束了，TC再从记录中看这个全局事务有没有失败的，有的话，TC再通知所有的分支事务进行回滚</p>
+<h3 id="部署TC服务"><a href="#部署TC服务" class="headerlink" title="部署TC服务"></a>部署TC服务</h3><h4 id="准备数据库表"><a href="#准备数据库表" class="headerlink" title="准备数据库表"></a>准备数据库表</h4><p>Seata支持多种存储模式，但考虑到持久化的需要，我们一般选择基于数据库存储。执行课前资料提供的<code>《seata-tc.sql》</code>，导入数据库表：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/../img/java/springboot/37.png" alt="37"></p>
+<p>branch_table 分支表，global_table 全局表，分支事务跟全局事务的信息存放在这两张表中</p>
+<p>剩下两张lock表就是锁，tc服务会基于数据库表实现一个锁功能来确保分布式事务执行的过程中的线程安全</p>
+<h4 id="准备配置文件"><a href="#准备配置文件" class="headerlink" title="准备配置文件"></a>准备配置文件</h4><p>课前资料准备了一个seata目录，其中包含了seata运行时所需要的配置文件：</p>
+<p>其中包含中文注释，大家可以自行阅读。</p>
+<p>我们将整个seata文件夹拷贝到虚拟机的<code>/root</code>目录</p>
+<h4 id="Docker部署"><a href="#Docker部署" class="headerlink" title="Docker部署"></a>Docker部署</h4><p>需要注意，要确保nacos、mysql都在hm-net网络中。如果某个容器不再hm-net网络，可以参考下面的命令将某容器加入指定网络：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network connect [网络名] [容器名]</span><br></pre></td></tr></table></figure>
+
+<p>在虚拟机的<code>/root</code>目录执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run --name seata \</span><br><span class="line">-p 8099:8099 \</span><br><span class="line">-p 7099:7099 \</span><br><span class="line">-e SEATA_IP=192.168.227.130 \</span><br><span class="line">-v ./seata:/seata-server/resources \</span><br><span class="line">--privileged=true \</span><br><span class="line">--network hm-net \</span><br><span class="line">-d \</span><br><span class="line">seataio/seata-server:1.5.2</span><br></pre></td></tr></table></figure>
+
+<p>如果镜像下载困难，也可以把课前资料提供的镜像上传到虚拟机并加载：</p>
+<h3 id="微服务集成Seata"><a href="#微服务集成Seata" class="headerlink" title="微服务集成Seata"></a>微服务集成Seata</h3><p>参与分布式事务的每一个微服务都需要集成Seata，我们以<code>trade-service</code>为例。</p>
+<h4 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h4><p>为了方便各个微服务集成seata，我们需要把seata配置共享到nacos，因此<code>trade-service</code>模块不仅仅要引入seata依赖，还要引入nacos依赖:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--统一配置管理--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--读取bootstrap文件--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--seata--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-seata<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="改造配置"><a href="#改造配置" class="headerlink" title="改造配置"></a>改造配置</h4><p>首先在nacos上添加一个共享的seata配置，命名为<code>shared-seata.yaml</code>：</p>
+<p>内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">seata:</span></span><br><span class="line">  <span class="attr">registry:</span> <span class="comment"># TC服务注册中心的配置，微服务根据这些信息去注册中心获取tc服务地址</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">nacos</span> <span class="comment"># 注册中心类型 nacos</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="number">192.168</span><span class="number">.150</span><span class="number">.101</span><span class="string">:8848</span> <span class="comment"># nacos地址</span></span><br><span class="line">      <span class="attr">namespace:</span> <span class="string">&quot;&quot;</span> <span class="comment"># namespace，默认为空</span></span><br><span class="line">      <span class="attr">group:</span> <span class="string">DEFAULT_GROUP</span> <span class="comment"># 分组，默认是DEFAULT_GROUP</span></span><br><span class="line">      <span class="attr">application:</span> <span class="string">seata-server</span> <span class="comment"># seata服务名称</span></span><br><span class="line">      <span class="attr">username:</span> <span class="string">nacos</span></span><br><span class="line">      <span class="attr">password:</span> <span class="string">nacos</span></span><br><span class="line">  <span class="attr">tx-service-group:</span> <span class="string">hmall</span> <span class="comment"># 事务组名称</span></span><br><span class="line">  <span class="attr">service:</span></span><br><span class="line">    <span class="attr">vgroup-mapping:</span> <span class="comment"># 事务组与tc集群的映射关系</span></span><br><span class="line">      <span class="attr">hmall:</span> <span class="string">&quot;default&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，改造<code>trade-service</code>模块，添加<code>bootstrap.yaml</code>：</p>
+<p>内容如下:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">trade-service</span> <span class="comment"># 服务名称</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="number">192.168</span><span class="number">.150</span><span class="number">.101</span> <span class="comment"># nacos地址</span></span><br><span class="line">      <span class="attr">config:</span></span><br><span class="line">        <span class="attr">file-extension:</span> <span class="string">yaml</span> <span class="comment"># 文件后缀名</span></span><br><span class="line">        <span class="attr">shared-configs:</span> <span class="comment"># 共享配置</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">shared-jdbc.yaml</span> <span class="comment"># 共享mybatis配置</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">shared-log.yaml</span> <span class="comment"># 共享日志配置</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">shared-swagger.yaml</span> <span class="comment"># 共享日志配置</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">shared-seata.yaml</span> <span class="comment"># 共享seata配置</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里加载了共享的seata配置。</p>
+<p>然后改造application.yaml文件，内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8085</span></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">okhttp:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启OKHttp连接池支持</span></span><br><span class="line">  <span class="attr">sentinel:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启Feign对Sentinel的整合</span></span><br><span class="line"><span class="attr">hm:</span></span><br><span class="line">  <span class="attr">swagger:</span></span><br><span class="line">    <span class="attr">title:</span> <span class="string">交易服务接口文档</span></span><br><span class="line">    <span class="attr">package:</span> <span class="string">com.hmall.trade.controller</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">database:</span> <span class="string">hm-trade</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>&#x2F;&#x2F; TODO  参考上述办法分别改造<code>hm-cart</code>和<code>hm-item</code>两个微服务模块。</p>
+<h4 id="添加数据库表"><a href="#添加数据库表" class="headerlink" title="添加数据库表"></a>添加数据库表</h4><p>seata的客户端在解决分布式事务的时候需要记录一些中间数据，保存在数据库中。因此我们要先准备一个这样的表。</p>
+<p>将课前资料的seata-at.sql分别文件导入hm-trade、hm-cart、hm-item三个数据库中：</p>
+<p>OK，至此为止，微服务整合的工作就完成了。可以参考上述方式对<code>hm-item</code>和<code>hm-cart</code>模块完成整合改造。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://lypsblog.top">实名上网陆熠鹏</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://lypsblog.top/2024/11/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A4/">http://lypsblog.top/2024/11/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A4/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="/img/java/java.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/11/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E5%8F%8A%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/" title="微服务网关及配置管理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/java.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">微服务网关及配置管理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2024/06/17/git%E8%AF%A6%E8%A7%A3/" title="git详解"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/git.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-17</div><div class="title">git详解</div></div></a></div><div><a href="/2024/06/26/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" title="Java基础学习"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-26</div><div class="title">Java基础学习</div></div></a></div><div><a href="/2024/06/30/Java%E5%AE%B9%E5%99%A8%E7%94%A8%E6%B3%95/" title="Java容器用法"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-30</div><div class="title">Java容器用法</div></div></a></div><div><a href="/2024/08/12/Flexbox%E5%BC%B9%E6%80%A7%E7%9B%92%E5%AD%90/" title="Flexbox弹性盒子"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/java.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-12</div><div class="title">Flexbox弹性盒子</div></div></a></div><div><a href="/2024/09/06/Springboot%E7%AE%80%E5%8D%95%E5%9B%9E%E9%A1%BE/" title="Springboot简单回顾"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/springboot.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-06</div><div class="title">Springboot简单回顾</div></div></a></div><div><a href="/2024/09/12/mysql%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/" title="Mysql常用方法整理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/mysql.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-12</div><div class="title">Mysql常用方法整理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">实名上网陆熠鹏</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lyp6666666"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lyp6666666" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:532567840@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://leetcode.cn/u/frosty-boydw85/" target="_blank" title="LeetCode"><i class="fas fa-code"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome to my blog !</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A4%E5%92%8C%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">微服务保护和分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Sentinel"><span class="toc-text">Sentinel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%90%AD%E5%BB%BA"><span class="toc-text">控制台搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%95%B4%E5%90%88"><span class="toc-text">微服务整合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E9%99%90%E6%B5%81"><span class="toc-text">请求限流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E9%9A%94%E7%A6%BB"><span class="toc-text">线程隔离</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#OpenFeign%E6%95%B4%E5%90%88Sentinel"><span class="toc-text">OpenFeign整合Sentinel</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BA%BF%E7%A8%8B%E9%9A%94%E7%A6%BB"><span class="toc-text">配置线程隔离</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD"><span class="toc-text">服务熔断</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E9%99%8D%E7%BA%A7%E9%80%BB%E8%BE%91"><span class="toc-text">编写降级逻辑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD-1"><span class="toc-text">服务熔断</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Seata"><span class="toc-text">Seata</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2TC%E6%9C%8D%E5%8A%A1"><span class="toc-text">部署TC服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="toc-text">准备数据库表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">准备配置文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Docker%E9%83%A8%E7%BD%B2"><span class="toc-text">Docker部署</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%9B%86%E6%88%90Seata"><span class="toc-text">微服务集成Seata</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-text">引入依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B9%E9%80%A0%E9%85%8D%E7%BD%AE"><span class="toc-text">改造配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="toc-text">添加数据库表</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/11/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A4/" title="微服务保护"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/java.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务保护"/></a><div class="content"><a class="title" href="/2024/11/28/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BF%9D%E6%8A%A4/" title="微服务保护">微服务保护</a><time datetime="2024-11-28T06:52:09.000Z" title="Created 2024-11-28 14:52:09">2024-11-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E5%8F%8A%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/" title="微服务网关及配置管理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/java.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务网关及配置管理"/></a><div class="content"><a class="title" href="/2024/11/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E5%8F%8A%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/" title="微服务网关及配置管理">微服务网关及配置管理</a><time datetime="2024-11-18T13:09:27.000Z" title="Created 2024-11-18 21:09:27">2024-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8/" title="微服务服务调用"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/java.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务服务调用"/></a><div class="content"><a class="title" href="/2024/11/17/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8/" title="微服务服务调用">微服务服务调用</a><time datetime="2024-11-17T02:47:21.000Z" title="Created 2024-11-17 10:47:21">2024-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/12/MybatisPlus/" title="MybatisPlus"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MybatisPlus"/></a><div class="content"><a class="title" href="/2024/11/12/MybatisPlus/" title="MybatisPlus">MybatisPlus</a><time datetime="2024-11-12T12:30:51.000Z" title="Created 2024-11-12 20:30:51">2024-11-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/12/Spring%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%AE%9E%E7%8E%B0/" title="Spring微信支付实现"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/java/springboot.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring微信支付实现"/></a><div class="content"><a class="title" href="/2024/11/12/Spring%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%AE%9E%E7%8E%B0/" title="Spring微信支付实现">Spring微信支付实现</a><time datetime="2024-11-12T02:47:55.000Z" title="Created 2024-11-12 10:47:55">2024-11-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 实名上网陆熠鹏</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">简</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="30" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
